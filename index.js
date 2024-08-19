@@ -129,17 +129,21 @@ const filePromises = paths.map((filePath) => {
                 colAligns: ["left", "center"],
             });
 
+            let oreTotali = 0;
             for (const [key, hours] of Object.entries(typeTasks)) {
                 typeTable.push([key, hours.toFixed(2)]);
+                oreTotali += hours;
             }
 
             for (const [key, hours] of Object.entries(clientTasks)) {
                 typeTable.push([key, hours.toFixed(2)]);
+                oreTotali += hours;
             }
 
             const fileName = path.basename(filePath, path.extname(filePath));
             console.log(`Analisi week ${fileName}`.toUpperCase());
             console.log(typeTable.toString());
+            console.log(`Ore totali: ${oreTotali.toFixed(2)}`);
             console.log("");
 
             resolve();
@@ -161,20 +165,26 @@ function printCumulativeTables() {
     }
 
     let mdResult = `# Analisi Settimane ${weeks.join(", ")}\n\n`;
+    let oreTotali = 0;
 
     for (const [key, hours] of Object.entries(totalTypeTasks)) {
         cumulativeTypeTable.push([key, hours.toFixed(2)]);
+        oreTotali += hours;
         mdResult += `* ${key}: ${hours.toFixed(2)} ore\n`;
     }
 
     for (const [key, hours] of Object.entries(totalClientTasks)) {
         cumulativeTypeTable.push([key, hours.toFixed(2)]);
+        oreTotali += hours;
         mdResult += `* ${key}: ${hours.toFixed(2)} ore\n`;
     }
+
+    mdResult += `\nOre totali: ${oreTotali.toFixed(2)} ore\n`;
 
     console.log("");
     console.log(`ANALISI WEEKS ${weeks.join(", ")}`.toUpperCase());
     console.log(cumulativeTypeTable.toString());
+    console.log(`Ore totali: ${oreTotali.toFixed(2)}`);
     console.log("");
     if (printSumAsMd) {
         console.log(mdResult);
